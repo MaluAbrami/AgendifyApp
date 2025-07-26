@@ -1,0 +1,17 @@
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\bin\Debug\net9.0\Infra.deps.json
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\bin\Debug\net9.0\Infra.runtimeconfig.json
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\bin\Debug\net9.0\Infra.dll
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\bin\Debug\net9.0\Infra.pdb
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\bin\Debug\net9.0\Domain.dll
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\bin\Debug\net9.0\Domain.pdb
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.csproj.AssemblyReference.cache
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.AssemblyInfoInputs.cache
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.AssemblyInfo.cs
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.csproj.CoreCompileInputs.cache
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.csproj.Up2Date
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.dll
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\refint\Infra.dll
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.pdb
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.genruntimeconfig.cache
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\ref\Infra.dll

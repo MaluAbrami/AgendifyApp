@@ -1,7 +1,6 @@
 using Application.Response;
 using Application.UserCQ.Commands;
 using Application.UserCQ.ViewModels;
-using Application.Utils;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -44,10 +43,10 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, BaseRes
             }
             
             var roles = await _userManager.GetRolesAsync(userExist);
-            var role = roles.FirstOrDefault() ?? UserRoles.User;
+            var role = roles.FirstOrDefault();
             
             var refreshTokenVM = _mapper.Map<RefreshTokenViewModel>(userExist);
-            refreshTokenVM.TokenJwt = await _authService.GenerateJwt(userExist.Email!, role);
+            refreshTokenVM.TokenJwt = await _authService.GenerateJwt(userExist.Id, role);
 
             return BaseResponseExtensions.Sucess<RefreshTokenViewModel>(refreshTokenVM);
         }   

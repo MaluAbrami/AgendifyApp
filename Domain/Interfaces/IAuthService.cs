@@ -4,7 +4,7 @@ namespace Domain.Interfaces;
 
 public interface IAuthService
 {
-    Task<string> GenerateJwt(string email, string role);
+    Task<string> GenerateJwt(string id, string role);
     public Task<string> GenerateRefreshToken();
     public Task<ValidationFieldUserEnum> UniqueEmail(string email);
 }

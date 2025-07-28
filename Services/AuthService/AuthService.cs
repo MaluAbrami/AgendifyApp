@@ -21,7 +21,7 @@ public class AuthService : IAuthService
         _configuration = configuration;
     }
 
-    public Task<string> GenerateJwt(string email, string role)
+    public Task<string> GenerateJwt(string id, string role)
     {
         var issuer = _configuration["Jwt:Issuer"];
         var audience = _configuration["Jwt:Audience"];
@@ -32,10 +32,10 @@ public class AuthService : IAuthService
 
         var claims = new List<Claim>
         {
-            new ("Email", email),
-            new ("Role", role),
-            new("EmailIdentifier", email.Split("@").ToString()!),
-            new("CurrentTime",  DateTime.UtcNow.ToString())
+            new(ClaimTypes.NameIdentifier, id),
+            new(ClaimTypes.Role, role), // Use ClaimTypes.Role consistentemente
+            new("jti", Guid.NewGuid().ToString()), // Token ID único
+            new("iat", DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
         };
         
         _ = int.TryParse(_configuration["Jwt:TokenExpirationTimeInDays"], out int tokenExpirationTimeInDays);

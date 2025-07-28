@@ -4,11 +4,14 @@ using Application.UserCQ.Commands;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infra.Persistence;
+using Infra.Repositories;
+using Infra.UnitOfWork.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Services.AuthService;
+using Services.CompanyService;
 
 namespace API.Extensions;
 
@@ -17,31 +20,50 @@ public static class BuilderExtensions
     public static void AddJwtAuth(this WebApplicationBuilder builder)
     {
         var configuration = builder.Configuration;
-
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+        
+        // Configure APENAS JWT Bearer - remova a configuração de Cookie
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.SaveToken = true;
+            options.RequireHttpsMetadata = false; // Para desenvolvimento
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = configuration["JWT:Issuer"],
-                    ValidAudience = configuration["JWT:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!))
-                };
-            })
-            .AddCookie(options =>
-            {
-                options.Cookie.HttpOnly = true; //Não permite o acesso pelo JavaScript do navegador
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always; //Obriga que as requisições sejam feitas via HTTPS e não apenas HTTP
-                options.Cookie.SameSite = SameSiteMode.Strict; //O cookie só vai ser aceito se for do mesmo site que definiu aquele cookie e não de terceiros
-                options.ExpireTimeSpan = TimeSpan.FromDays(7); //Utilizamos o mesmo período de validade do nosso token jwt
-            });
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration["JWT:Issuer"],
+                ValidAudience = configuration["JWT:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!)),
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+        
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("ManagerPolicy", policy =>
+                policy.RequireAuthenticatedUser()
+                    .RequireRole("Manager"));
+            
+            options.AddPolicy("UserPolicy", policy =>
+                policy.RequireAuthenticatedUser()
+                    .RequireRole("User"));
+        });
     }
     
     public static void AddServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddAuthorization();
+        builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+        {
+            options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+        });
+        
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblies(typeof(RegisterUserCommand).Assembly));
         
@@ -73,5 +95,12 @@ public static class BuilderExtensions
     public static void AddInjections(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<ICompanyService, CompanyService>();
+    }
+
+    public static void AddRepositories(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
     }
 }

@@ -1,6 +1,5 @@
 using API.Controllers;
 using API.Extensions;
-using Application.Utils;
 using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
@@ -15,11 +14,7 @@ builder.AddDatabase();
 builder.AddMapper();
 builder.AddJwtAuth();
 builder.AddInjections();
-
-builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
-{
-    options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-});
+builder.AddRepositories();
 
 var app = builder.Build();
 
@@ -44,8 +39,10 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UserRoutes();
+app.CompanyRoutes();
 
 app.Run();

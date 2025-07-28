@@ -1,7 +1,6 @@
 using Application.Response;
 using Application.UserCQ.Commands;
 using Application.UserCQ.ViewModels;
-using Application.Utils;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
@@ -49,7 +48,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, B
             await _userManager.AddToRoleAsync(user, request.Role.ToString());
 
             var refreshTokenVM = _mapper.Map<RefreshTokenViewModel>(user);
-            refreshTokenVM.TokenJwt = await _authService.GenerateJwt(user.Email!, UserRoles.User);
+            refreshTokenVM.TokenJwt = await _authService.GenerateJwt(user.Id, request.Role.ToString());
 
             return BaseResponseExtensions.Sucess<RefreshTokenViewModel>(refreshTokenVM);
         }

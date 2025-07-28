@@ -31,42 +31,25 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, BaseRes
 
             if (userExist == null)
             {
-                return new BaseResponse<RefreshTokenViewModel>
-                {
-                    ResponseInfo = new ResponseInfo()
-                    {
-                        Title = "Usuário não encontrado",
-                        ErrorDescription = $"Não há nenhum usuário cadastrado com o email {request.Email}",
-                        HttpStatus = 404
-                    },
-                    Value = null
-                };
+                return BaseResponseExtensions.Fail<RefreshTokenViewModel>("Credenciais inválidas", "Email ou senha incorretos",
+                    401);
             }
 
             var validPassword = await _userManager.CheckPasswordAsync(userExist, request.Password);
 
             if (!validPassword)
             {
-                return new BaseResponse<RefreshTokenViewModel>
-                {
-                    ResponseInfo = new ResponseInfo()
-                    {
-                        Title = "Senha incorreta",
-                        ErrorDescription = "A senha informada está incorreta, tente novamente",
-                        HttpStatus = 404
-                    },
-                    Value = null
-                };
+                return BaseResponseExtensions.Fail<RefreshTokenViewModel>("Credenciais inválidas", "Email ou senha incorretos",
+                    401);
             }
             
+            var roles = await _userManager.GetRolesAsync(userExist);
+            var role = roles.FirstOrDefault() ?? UserRoles.User;
+            
             var refreshTokenVM = _mapper.Map<RefreshTokenViewModel>(userExist);
-            refreshTokenVM.TokenJwt = await _authService.GenerateJwt(userExist.Email!, UserRoles.User);
+            refreshTokenVM.TokenJwt = await _authService.GenerateJwt(userExist.Email!, role);
 
-            return new BaseResponse<RefreshTokenViewModel>
-            {
-                ResponseInfo = null,
-                Value = refreshTokenVM
-            };
+            return BaseResponseExtensions.Sucess<RefreshTokenViewModel>(refreshTokenVM);
         }   
         catch (Exception e)
         {

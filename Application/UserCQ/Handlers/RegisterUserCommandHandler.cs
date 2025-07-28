@@ -32,16 +32,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, B
 
             if (isUniqueEmail is ValidationFieldUserEnum.EmailUnavailable)
             {
-                return new BaseResponse<RefreshTokenViewModel>
-                {
-                    ResponseInfo = new ResponseInfo()
-                    {
-                        Title = "Email indisponível",
-                        ErrorDescription = $"O email informado {request.Email} já está em uso",
-                        HttpStatus = 400
-                    },
-                    Value = null
-                };
+                return BaseResponseExtensions.Fail<RefreshTokenViewModel>("Email indisponível",
+                    "O email informado já está em uso", 400);
             }
 
             var user = _mapper.Map<User>(request);
@@ -51,28 +43,15 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, B
             
             if (!result.Succeeded)
             {
-                return new BaseResponse<RefreshTokenViewModel>
-                {
-                    ResponseInfo = new ResponseInfo
-                    {
-                        Title = "Erro ao registrar usuário",
-                        ErrorDescription = string.Join("; ", result.Errors.Select(e => e.Description)),
-                        HttpStatus = 400
-                    },
-                    Value = null
-                };
+                return BaseResponseExtensions.Fail<RefreshTokenViewModel>("Erro ao registrar usuário", string.Join("; ", result.Errors.Select(e => e.Description)), 400);
             }
             
             await _userManager.AddToRoleAsync(user, UserRoles.User);
 
             var refreshTokenVM = _mapper.Map<RefreshTokenViewModel>(user);
             refreshTokenVM.TokenJwt = await _authService.GenerateJwt(user.Email!, UserRoles.User);
-            
-            return new BaseResponse<RefreshTokenViewModel>
-            {
-                ResponseInfo = null,
-                Value = refreshTokenVM
-            };
+
+            return BaseResponseExtensions.Sucess<RefreshTokenViewModel>(refreshTokenVM);
         }
         catch (Exception e)
         {

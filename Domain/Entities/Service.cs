@@ -20,5 +20,8 @@ public class Service
     
     [Required]
     public Guid CompanyId { get; set; }
+    [ForeignKey(nameof(CompanyId))]
     public Company Company { get; set; } = null!;
+    
+    public List<Appointment> Appointments { get; set; } = new();
 }

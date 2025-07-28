@@ -1,12 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Application.Response;
 using Application.UserCQ.ViewModels;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.UserCQ.Commands;
 
-public class RegisterUserCommand : IRequest<BaseResponse<RefreshTokenViewModel>>
+public record RegisterUserCommand : IRequest<BaseResponse<RefreshTokenViewModel>>
 {
+    [Required]
+    public RolesEnum Role { get; set; }
+    
     [Required]
     [StringLength(50), MinLength(3)]
     public string Username { get; set; }

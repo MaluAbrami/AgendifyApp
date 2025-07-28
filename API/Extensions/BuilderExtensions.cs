@@ -41,7 +41,7 @@ public static class BuilderExtensions
     
     public static void AddServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers();
+        builder.Services.AddAuthorization();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblies(typeof(RegisterUserCommand).Assembly));
         

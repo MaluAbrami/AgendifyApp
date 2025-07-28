@@ -46,7 +46,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, B
                 return BaseResponseExtensions.Fail<RefreshTokenViewModel>("Erro ao registrar usuário", string.Join("; ", result.Errors.Select(e => e.Description)), 400);
             }
             
-            await _userManager.AddToRoleAsync(user, UserRoles.User);
+            await _userManager.AddToRoleAsync(user, request.Role.ToString());
 
             var refreshTokenVM = _mapper.Map<RefreshTokenViewModel>(user);
             refreshTokenVM.TokenJwt = await _authService.GenerateJwt(user.Email!, UserRoles.User);

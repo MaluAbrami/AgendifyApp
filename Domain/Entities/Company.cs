@@ -26,7 +26,8 @@ public class Company
     public string Email { get; set; } = null!;
     
     [Required]
-    public Guid OwnerId { get; set; }
+    public string OwnerId { get; set; }
+    [ForeignKey(nameof(OwnerId))]
     public User Owner { get; set; } = null!;
 
     public List<Service> Services { get; set; } = new();

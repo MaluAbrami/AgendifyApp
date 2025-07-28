@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Enums;
 
 namespace Domain.Entities;
@@ -13,12 +14,9 @@ public class Appointment
     public Service Service { get; set; } = null!;
     
     [Required]
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
+    [ForeignKey(nameof(UserId))]
     public User User { get; set; } = null!;
-    
-    [Required]
-    public Guid CompanyId { get; set; }
-    public Company Company { get; set; } = null!;
     
     [Required]
     public DateTime ScheduleAt { get; set; }

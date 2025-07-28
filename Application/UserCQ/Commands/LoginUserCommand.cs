@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.UserCQ.Commands;
 
-public class LoginUserCommand : IRequest<BaseResponse<RefreshTokenViewModel>>
+public record LoginUserCommand : IRequest<BaseResponse<RefreshTokenViewModel>>
 {
     [Required]
     [EmailAddress]

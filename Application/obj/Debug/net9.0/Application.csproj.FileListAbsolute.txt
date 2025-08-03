@@ -13,3 +13,4 @@ C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Application\obj\Debug\net9.0\Appl
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Application\obj\Debug\net9.0\refint\Application.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Application\obj\Debug\net9.0\Application.pdb
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Application\obj\Debug\net9.0\ref\Application.dll
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Application\obj\Debug\net9.0\Application.sourcelink.json

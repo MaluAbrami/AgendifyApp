@@ -72,5 +72,8 @@ app.UseAuthorization();
 
 app.UserRoutes();
 app.CompanyRoutes();
+app.ServiceRoutes();
+app.ScheduleRoutes();
+app.AppointmentRoutes();
 
 app.Run();

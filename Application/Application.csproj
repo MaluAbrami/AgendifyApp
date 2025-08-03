@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="ScheduleCQ\Querys\" />
       <Folder Include="Utils\" />
     </ItemGroup>
 

@@ -15,3 +15,4 @@ C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\refint\Inf
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.pdb
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.genruntimeconfig.cache
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\ref\Infra.dll
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.sourcelink.json

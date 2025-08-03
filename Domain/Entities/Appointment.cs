@@ -19,6 +19,11 @@ public class Appointment
     public User User { get; set; } = null!;
     
     [Required]
+    public Guid ScheduleId { get; set; }
+    [ForeignKey(nameof(ScheduleId))]
+    public Schedule Schedule { get; set; } = null!;
+    
+    [Required]
     public DateTime ScheduleAt { get; set; }
 
     [Required]

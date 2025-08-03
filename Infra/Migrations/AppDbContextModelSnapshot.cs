@@ -31,6 +31,9 @@ namespace Infra.Migrations
                     b.Property<DateTime>("ScheduleAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("ScheduleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uniqueidentifier");
 
@@ -42,6 +45,8 @@ namespace Infra.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ScheduleId");
 
                     b.HasIndex("ServiceId");
 
@@ -87,6 +92,53 @@ namespace Infra.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Schedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Schedules");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ScheduleRule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Day")
+                        .HasColumnType("int");
+
+                    b.Property<TimeOnly?>("EndLunchTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<Guid>("ScheduleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<TimeOnly?>("StartLunchTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("ScheduleRules");
+                });
+
             modelBuilder.Entity("Domain.Entities.Service", b =>
                 {
                     b.Property<Guid>("Id")
@@ -98,6 +150,9 @@ namespace Infra.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DurationTime")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -324,6 +379,12 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entities.Appointment", b =>
                 {
+                    b.HasOne("Domain.Entities.Schedule", "Schedule")
+                        .WithMany("Appointments")
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Service", "Service")
                         .WithMany("Appointments")
                         .HasForeignKey("ServiceId")
@@ -335,6 +396,8 @@ namespace Infra.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Schedule");
 
                     b.Navigation("Service");
 
@@ -350,6 +413,28 @@ namespace Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Schedule", b =>
+                {
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany("Schedules")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ScheduleRule", b =>
+                {
+                    b.HasOne("Domain.Entities.Schedule", "Schedule")
+                        .WithMany("Rules")
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Schedule");
                 });
 
             modelBuilder.Entity("Domain.Entities.Service", b =>
@@ -416,7 +501,16 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entities.Company", b =>
                 {
+                    b.Navigation("Schedules");
+
                     b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Schedule", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("Rules");
                 });
 
             modelBuilder.Entity("Domain.Entities.Service", b =>

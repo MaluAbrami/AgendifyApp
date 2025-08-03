@@ -102,5 +102,9 @@ public static class BuilderExtensions
     {
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+        builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+        builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+        builder.Services.AddScoped<IScheduleRuleRepository, ScheduleRuleRepository>();
     }
 }

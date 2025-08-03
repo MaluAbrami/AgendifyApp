@@ -19,6 +19,9 @@ public class Service
     public double Price { get; set; }
     
     [Required]
+    public int DurationTime { get; set; }
+    
+    [Required]
     public Guid CompanyId { get; set; }
     [ForeignKey(nameof(CompanyId))]
     public Company Company { get; set; } = null!;

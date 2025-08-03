@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using Application.UserCQ.Commands;
+using Application.UserCQ.Querys;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +14,15 @@ public static class UserController
 
         group.MapPost("register-user", RegisterUser);
         group.MapPost("login-user", LoginUser);
+        group.MapPatch("update-user", UpdateUser)
+            .RequireAuthorization();
+        group.MapDelete("delete-user", DeleteUser)
+            .RequireAuthorization();
+        group.MapGet("get-user", GetUser)
+            .RequireAuthorization();
     }
 
-    public static async Task<IResult> RegisterUser([FromServices] IMediator mediator, [FromBody] RegisterUserCommand command)
+    private static async Task<IResult> RegisterUser([FromServices] IMediator mediator, [FromBody] RegisterUserCommand command)
     {
         var result = await mediator.Send(command);
 
@@ -24,11 +32,53 @@ public static class UserController
         return Results.BadRequest(result.ResponseInfo);
     }
     
-    public static async Task<IResult> LoginUser([FromServices] IMediator mediator, [FromBody] LoginUserCommand command)
+    private static async Task<IResult> LoginUser([FromServices] IMediator mediator, [FromBody] LoginUserCommand command)
     {
         var result = await mediator.Send(command);
 
         if (result.ResponseInfo == null)
+            return Results.Ok(result.Value);
+        
+        return Results.BadRequest(result.ResponseInfo);
+    }
+
+    private static async Task<IResult> UpdateUser(HttpContext context, [FromServices] IMediator mediator, [FromBody] UpdateUserCommand command)
+    {
+        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+            return Results.Unauthorized();
+        
+        var result = await mediator.Send(command);
+
+        if (result.ResponseInfo == null)
+            return Results.Ok(result.Value);
+        
+        return Results.BadRequest(result.ResponseInfo);
+    }
+
+    private static async Task<IResult> DeleteUser(HttpContext context, [FromServices] IMediator mediator)
+    {
+        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if(string.IsNullOrEmpty(userId))
+            return Results.Unauthorized();
+
+        DeleteUserCommand command = new() { Id = userId };
+        
+        var result = await mediator.Send(command);
+        
+        if(result.ResponseInfo == null)
+            return Results.NoContent();
+        
+        return Results.BadRequest(result.ResponseInfo);
+    }
+
+    private static async Task<IResult> GetUser(HttpContext context, [FromServices] IMediator mediator,GetUserQuery query)
+    {
+        var result = await mediator.Send(query);
+        
+        if(result.ResponseInfo == null)
             return Results.Ok(result.Value);
         
         return Results.BadRequest(result.ResponseInfo);

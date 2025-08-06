@@ -48,6 +48,8 @@ public static class UserController
 
         if (string.IsNullOrEmpty(userId))
             return Results.Unauthorized();
+
+        command.Id = userId;
         
         var result = await mediator.Send(command);
 

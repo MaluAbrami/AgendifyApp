@@ -18,6 +18,8 @@ public class UserMappings : Profile
             .ForMember(x => x.TokenJwt, x => x.AllowNull());
 
         CreateMap<RefreshTokenViewModel, UserViewModel>();
+
+        CreateMap<UserViewModel, User>();
     }
     
     private DateTime AddTenDays => DateTime.Now.AddDays(10);

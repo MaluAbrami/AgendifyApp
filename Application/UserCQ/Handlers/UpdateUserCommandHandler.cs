@@ -26,12 +26,9 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, BaseR
             return BaseResponseExtensions.Fail<UserViewModel>("Usuário não encontrado",
                 "Não foi encontrado nenhum usuário com o id informado", 404);
         
-        user.UserName = request.Username;
-        user.FullName = request.FullName;
-        user.Email = request.Email;
-        user.PhoneNumber = request.PhoneNumber;
+        var updatedUser = _mapper.Map(request, user);
         
-        var result = await _userManager.UpdateAsync(user);
+        var result = await _userManager.UpdateAsync(updatedUser);
         if (!result.Succeeded)
             return BaseResponseExtensions.Fail<UserViewModel>("Erro ao atualizar usuário",
                 "Não foi possível atualizar os dados informados do usuário", 400);

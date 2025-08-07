@@ -1,6 +1,8 @@
 using System.Security.Claims;
+using Application.Response;
 using Application.UserCQ.Commands;
 using Application.UserCQ.Querys;
+using Application.UserCQ.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +20,7 @@ public static class UserController
             .RequireAuthorization();
         group.MapDelete("delete-user", DeleteUser)
             .RequireAuthorization();
-        group.MapGet("get-user", GetUser)
+        group.MapGet("get-user/{id}", GetUser)
             .RequireAuthorization();
     }
 
@@ -76,9 +78,9 @@ public static class UserController
         return Results.BadRequest(result.ResponseInfo);
     }
 
-    private static async Task<IResult> GetUser(HttpContext context, [FromServices] IMediator mediator,GetUserQuery query)
+    private static async Task<IResult> GetUser(string id, [FromServices] IMediator mediator)
     {
-        var result = await mediator.Send(query);
+        var result = await mediator.Send(new GetUserQuery { UserId = id } );
         
         if(result.ResponseInfo == null)
             return Results.Ok(result.Value);

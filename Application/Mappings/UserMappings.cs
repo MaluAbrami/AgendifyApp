@@ -19,7 +19,12 @@ public class UserMappings : Profile
 
         CreateMap<RefreshTokenViewModel, UserViewModel>();
 
-        CreateMap<UserViewModel, User>();
+        CreateMap<User, UserViewModel>();
+        
+        //Mapeamento que ignora os valores nulos que vierem do update, assim garante que apenas vai dar update nos dados que foram realmente passados no endpoint
+        CreateMap<UpdateUserCommand, User>()
+            .ForAllMembers(opt =>
+                opt.Condition((src, dest, srcMember) => srcMember != null));
     }
     
     private DateTime AddTenDays => DateTime.Now.AddDays(10);

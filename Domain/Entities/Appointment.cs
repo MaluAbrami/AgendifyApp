@@ -8,15 +8,13 @@ public class Appointment
 {
     [Key]
     public Guid Id { get; set; }
-
-    [Required]
-    public Guid ServiceId { get; set; }
-    public Service Service { get; set; } = null!;
     
-    [Required]
-    public string UserId { get; set; }
+    public Guid? ServiceId { get; set; }
+    public Service? Service { get; set; } = null!;
+    
+    public string? UserId { get; set; }
     [ForeignKey(nameof(UserId))]
-    public User User { get; set; } = null!;
+    public User? User { get; set; } = null!;
     
     [Required]
     public Guid ScheduleId { get; set; }

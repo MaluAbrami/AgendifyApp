@@ -11,4 +11,5 @@ public class User : IdentityUser
     public DateTime RefreshTokenExpirationTime { get; set; }
     
     public List<Company> Companies { get; set; } = new();
+    public List<Appointment> Appointments { get; set; } = new();
 }

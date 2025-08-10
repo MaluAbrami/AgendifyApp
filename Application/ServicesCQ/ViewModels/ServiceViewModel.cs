@@ -8,6 +8,6 @@ public class ServiceViewModel
     public string Name { get; set; }
     public string? Description { get; set; }
     public double Price { get; set; }
+    public int DurationTime { get; set; }
     public Guid CompanyId { get; set; }
-    public List<Appointment> Appointments { get; set; }
 }

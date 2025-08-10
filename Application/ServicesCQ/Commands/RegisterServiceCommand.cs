@@ -18,6 +18,9 @@ public record RegisterServiceCommand : IRequest<BaseResponse<ServiceViewModel>>
     public double Price { get; set; }
     
     [Required]
+    public int DurationTime { get; set; }
+    
+    [Required]
     public Guid CompanyId { get; set; }
     
     [JsonIgnore]

@@ -13,5 +13,9 @@ public class ServiceMapping : Profile
             .ForMember(x => x.Company, x => x.AllowNull());
 
         CreateMap<Service, ServiceViewModel>();
+        
+        CreateMap<UpdateServiceCommand, Service>()
+            .ForAllMembers(opt => 
+                opt.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

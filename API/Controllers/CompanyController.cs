@@ -19,7 +19,7 @@ public static class CompanyController
             .RequireAuthorization("ManagerPolicy");
         group.MapGet("get-company/{companyId}", GetCompany)
             .RequireAuthorization();
-        group.MapDelete("delete-company", DeleteCompany)
+        group.MapDelete("delete-company/{companyId}", DeleteCompany)
             .RequireAuthorization("ManagerPolicy");
     }
     
@@ -87,7 +87,7 @@ public static class CompanyController
         var result = await mediator.Send(command);
 
         if (result.ResponseInfo == null)
-            return Results.Ok(result.Value);
+            return Results.NoContent();
         
         return Results.BadRequest(result.ResponseInfo);
     }

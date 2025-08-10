@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.CompaniesCQ.Commands;
 
-public record RegisterCompanyCommand : IRequest<BaseResponse<RegisterCompanyViewModel>>
+public record RegisterCompanyCommand : IRequest<BaseResponse<CompanyViewModel>>
 {
     [Required] public string Name { get; set; } = null!;
     

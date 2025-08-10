@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Application.CompaniesCQ.Handlers;
 
-public class RegisterCompanyCommandHandler : IRequestHandler<RegisterCompanyCommand, BaseResponse<RegisterCompanyViewModel>>
+public class RegisterCompanyCommandHandler : IRequestHandler<RegisterCompanyCommand, BaseResponse<CompanyViewModel>>
 {
     private readonly ICompanyService _companyService;
     private readonly IUnitOfWork _unitOfWork;
@@ -22,16 +22,16 @@ public class RegisterCompanyCommandHandler : IRequestHandler<RegisterCompanyComm
         _mapper = mapper;
     }
     
-    public async Task<BaseResponse<RegisterCompanyViewModel>> Handle(RegisterCompanyCommand request, CancellationToken cancellationToken)
+    public async Task<BaseResponse<CompanyViewModel>> Handle(RegisterCompanyCommand request, CancellationToken cancellationToken)
     {
         var uniqueEmailAndCnpj = await _companyService.UniqueEmailAndCnpjCompany(request.Email, request.Cnpj);
 
         if (uniqueEmailAndCnpj == ValidationFieldCompanyEnum.EmailUnavailable)
-            return BaseResponseExtensions.Fail<RegisterCompanyViewModel>("Credenciais inválidas",
+            return BaseResponseExtensions.Fail<CompanyViewModel>("Credenciais inválidas",
                 "Email informado já está em uso", 400);
         
         if (uniqueEmailAndCnpj == ValidationFieldCompanyEnum.CnpjUnavailable)
-            return BaseResponseExtensions.Fail<RegisterCompanyViewModel>("Credenciais inválidas", "CNPJ informado já está em uso", 400);
+            return BaseResponseExtensions.Fail<CompanyViewModel>("Credenciais inválidas", "CNPJ informado já está em uso", 400);
         
         var company = _mapper.Map<Company>(request);
         company.OwnerId = request.OwnerId;
@@ -39,7 +39,7 @@ public class RegisterCompanyCommandHandler : IRequestHandler<RegisterCompanyComm
         await _unitOfWork.CompanyRepository.CreateAsycn(company);
         _unitOfWork.Commit();
 
-        var companyVM = _mapper.Map<RegisterCompanyViewModel>(company);
+        var companyVM = _mapper.Map<CompanyViewModel>(company);
 
         return BaseResponseExtensions.Sucess(companyVM);
     }

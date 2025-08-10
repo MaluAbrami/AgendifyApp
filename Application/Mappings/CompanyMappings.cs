@@ -12,6 +12,6 @@ public class CompanyMappings : Profile
         CreateMap<RegisterCompanyCommand, Company>()
             .ForMember(x => x.Owner, x => x.AllowNull());
 
-        CreateMap<Company, RegisterCompanyViewModel>();
+        CreateMap<Company, CompanyViewModel>();
     }
 }

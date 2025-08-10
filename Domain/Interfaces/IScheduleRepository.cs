@@ -5,4 +5,5 @@ namespace Domain.Interfaces;
 public interface IScheduleRepository : IBaseRepository<Schedule>
 {
     public Task<Schedule?> GetScheduleAndCompany(Guid id);
+    public Task<Schedule?> GetScheduleAndRulesAndAppointments(Guid id);
 }

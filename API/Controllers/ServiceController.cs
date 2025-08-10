@@ -42,7 +42,7 @@ public static class ServiceController
         return Results.BadRequest(result.ResponseInfo);
     }
     
-    public static async Task<IResult> UpdateService(HttpContext context, [FromServices] IMediator mediator, [FromBody] UpdateServiceCommand command)
+    private static async Task<IResult> UpdateService(HttpContext context, [FromServices] IMediator mediator, [FromBody] UpdateServiceCommand command)
     {
         var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
@@ -61,7 +61,7 @@ public static class ServiceController
         return Results.BadRequest(result.ResponseInfo);
     }
     
-    public static async Task<IResult> GetService(Guid serviceId, [FromServices] IMediator mediator)
+    private static async Task<IResult> GetService(Guid serviceId, [FromServices] IMediator mediator)
     {
         GetServiceQuery query = new GetServiceQuery() { ServiceId = serviceId };
         
@@ -73,7 +73,7 @@ public static class ServiceController
         return Results.BadRequest(result.ResponseInfo);
     }
     
-    public static async Task<IResult> DeleteService(Guid serviceId, HttpContext context, [FromServices] IMediator mediator)
+    private static async Task<IResult> DeleteService(Guid serviceId, HttpContext context, [FromServices] IMediator mediator)
     {
         DeleteServiceCommand command = new DeleteServiceCommand() { ServiceId = serviceId };
         

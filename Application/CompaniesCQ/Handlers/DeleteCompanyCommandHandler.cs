@@ -11,12 +11,10 @@ namespace Application.CompaniesCQ.Handlers;
 public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand, BaseResponse<DeleteCompanyCommand>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
     public DeleteCompanyCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
     }
     
     public async Task<BaseResponse<DeleteCompanyCommand>> Handle(DeleteCompanyCommand request, CancellationToken cancellationToken)

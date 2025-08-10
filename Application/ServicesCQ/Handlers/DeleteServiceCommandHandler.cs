@@ -9,12 +9,10 @@ namespace Application.ServicesCQ.Handlers;
 public class DeleteServiceCommandHandler : IRequestHandler<DeleteServiceCommand, BaseResponse<DeleteServiceCommand>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
-    public DeleteServiceCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public DeleteServiceCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
     }
     
     public async Task<BaseResponse<DeleteServiceCommand>> Handle(DeleteServiceCommand request, CancellationToken cancellationToken)

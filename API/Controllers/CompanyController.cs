@@ -23,7 +23,7 @@ public static class CompanyController
             .RequireAuthorization("ManagerPolicy");
     }
     
-    public static async Task<IResult> RegisterCompany(HttpContext context, [FromServices] IMediator mediator, [FromBody] RegisterCompanyCommand command)
+    private static async Task<IResult> RegisterCompany(HttpContext context, [FromServices] IMediator mediator, [FromBody] RegisterCompanyCommand command)
     {
         var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
@@ -42,7 +42,7 @@ public static class CompanyController
         return Results.BadRequest(result.ResponseInfo);
     }
     
-    public static async Task<IResult> UpdateCompany(HttpContext context, [FromServices] IMediator mediator, [FromBody] UpdateCompanyCommand command)
+    private static async Task<IResult> UpdateCompany(HttpContext context, [FromServices] IMediator mediator, [FromBody] UpdateCompanyCommand command)
     {
         var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
@@ -61,7 +61,7 @@ public static class CompanyController
         return Results.BadRequest(result.ResponseInfo);
     }
     
-    public static async Task<IResult> GetCompany(Guid companyId, [FromServices] IMediator mediator)
+    private static async Task<IResult> GetCompany(Guid companyId, [FromServices] IMediator mediator)
     {
         GetCompanyQuery query = new GetCompanyQuery() { CompanyId = companyId };
         
@@ -73,7 +73,7 @@ public static class CompanyController
         return Results.BadRequest(result.ResponseInfo);
     }
     
-    public static async Task<IResult> DeleteCompany(Guid companyId, HttpContext context, [FromServices] IMediator mediator)
+    private static async Task<IResult> DeleteCompany(Guid companyId, HttpContext context, [FromServices] IMediator mediator)
     {
         DeleteCompanyCommand command = new DeleteCompanyCommand() { CompanyId = companyId };
         

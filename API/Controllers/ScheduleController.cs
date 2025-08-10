@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Application.ScheduleCQ.Commands;
+using Application.ScheduleCQ.Querys;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,9 @@ public static class ScheduleController
 
         group.MapPost("register-schedule", RegisterSchedule)
             .RequireAuthorization("ManagerPolicy");
+        group.MapDelete("delete-schedule/{scheduleId}", DeleteSchedule)
+            .RequireAuthorization("ManagerPolicy");
+        group.MapGet("get-schedule/{scheduleId}", GetSchedule);
         
         group.MapPost("register-rule", RegisterRule)
             .RequireAuthorization("ManagerPolicy");
@@ -29,6 +33,37 @@ public static class ScheduleController
         command.OwnerCompanyId = userId;
         
         var result = await mediator.Send(command);
+
+        if (result.ResponseInfo == null)
+            return Results.Ok(result.Value);
+        
+        return Results.BadRequest(result.ResponseInfo);
+    }
+    
+    private static async Task<IResult> DeleteSchedule(Guid scheduleId, HttpContext context, [FromServices] IMediator mediator)
+    {
+        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if(string.IsNullOrEmpty(userId))
+            return Results.Unauthorized();
+        
+        DeleteScheduleCommand command = new DeleteScheduleCommand { ScheduleId = scheduleId };
+
+        command.OwnerCompanyId = userId;
+        
+        var result = await mediator.Send(command);
+
+        if (result.ResponseInfo == null)
+            return Results.NoContent();
+        
+        return Results.BadRequest(result.ResponseInfo);
+    }
+    
+    private static async Task<IResult> GetSchedule(Guid scheduleId, [FromServices] IMediator mediator)
+    {
+        GetScheduleQuery query = new GetScheduleQuery { ScheduleId = scheduleId };
+        
+        var result = await mediator.Send(query);
 
         if (result.ResponseInfo == null)
             return Results.Ok(result.Value);

@@ -18,5 +18,9 @@ public class ScheduleMapping : Profile
             .ForMember(x => x.Schedule, x => x.AllowNull());
 
         CreateMap<ScheduleRule, ScheduleRuleViewModel>();
+        
+        CreateMap<UpdateScheduleRuleCommand, ScheduleRule>()
+            .ForAllMembers(opt => 
+                opt.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

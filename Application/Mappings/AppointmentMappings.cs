@@ -12,5 +12,9 @@ public class AppointmentMappings : Profile
         CreateMap<RegisterAppointmentCommand, Appointment>();
 
         CreateMap<Appointment, AppointmentViewModel>();
+        
+        CreateMap<UpdateAppointmentCommand, Appointment>()
+            .ForAllMembers(opt => 
+                opt.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

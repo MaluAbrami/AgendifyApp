@@ -31,8 +31,11 @@ public class RegisterScheduleRuleHandler : IRequestHandler<RegisterScheduleRuleC
             return BaseResponseExtensions.Fail<ScheduleRuleViewModel>("Não é dono da empresa",
                 "Esta pessoa não é a mesma cadastrada como dono dessa empresa, por isso não está autorizado a executar essa ação",
                 401);
-        
-        // TODO: Verificar se já existe uma regra para o dia que está sendo requerido, para não duplicar regras para um mesmo dia da semana
+
+        if (scheduleExist.Rules.Exists(x => x.Day == request.DayOfWeek))
+            return BaseResponseExtensions.Fail<ScheduleRuleViewModel>("Já há regra para esse dia da semana",
+                "Não é possível cadastrar mais do que uma regra para um mesmo dia da semana",
+                400);
         
         var scheduleRule =  _mapper.Map<ScheduleRule>(request);
 

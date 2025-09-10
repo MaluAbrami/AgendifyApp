@@ -21,25 +21,27 @@ public class RegisterAppointmentCommandHandler : IRequestHandler<RegisterAppoint
     
     public async Task<BaseResponse<AppointmentViewModel>> Handle(RegisterAppointmentCommand request, CancellationToken cancellationToken)
     {
-        var scheduleExist = await _unitOfWork.ScheduleRepository.GetByIdAsync(x => x.Id == request.ScheduleId);
+        var scheduleExist = await _unitOfWork.ScheduleRepository.GetScheduleAndRulesAndAppointments(request.ScheduleId);
 
         if (scheduleExist == null)
             return BaseResponseExtensions.Fail<AppointmentViewModel>("Empresa não encontrada",
                 "A empresa informada não foi encontrada", 404);
 
         var company = await _unitOfWork.CompanyRepository.GetCompanyAndServices(scheduleExist.CompanyId);
-        bool validService = false;
-        foreach (var service in company.Services)
-        {
-            if(service.Id == request.ServiceId)
-                validService = true;
-        }
+        var validService = company.Services.Any(x => x.Id == request.ServiceId);
 
         if (!validService)
             return BaseResponseExtensions.Fail<AppointmentViewModel>("Este serviço não está no catálogo dessa empresa",
                 "O serviço escolhido não foi encontrado no catálogo dos serviços que a empresa disponibiliza", 400);
         
-        // TODO: verificar se o horário desejado está livre na 'Schedule' e se está dentro do horário que a empresa Atenda nas Rules do dia escolhido
+        if(!scheduleExist.Rules.Any(x => x.Day == request.ScheduleAt.DayOfWeek))
+            return BaseResponseExtensions.Fail<AppointmentViewModel>("Dia da semana não disponível",
+                "A empresa não presta serviços no dia da semana escolhido", 400);
+        
+        if (scheduleExist.Appointments.Any(x => x.ScheduleAt == request.ScheduleAt))
+            return BaseResponseExtensions.Fail<AppointmentViewModel>("Horário não disponível",
+                "Esse horário não está mais disponível para agendamentos", 400);
+        
         var appointment = _mapper.Map<Appointment>(request);
         appointment.UserId = request.UserId;
 

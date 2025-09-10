@@ -56,6 +56,9 @@ C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\Microsoft.Op
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\Microsoft.SqlServer.Server.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\Mono.TextTemplating.dll
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\System.ClientModel.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\System.CodeDom.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\bin\Debug\net9.0\System.Composition.AttributedModel.dll
@@ -166,6 +169,7 @@ C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\API.Assembly
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\API.csproj.CoreCompileInputs.cache
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\API.sourcelink.json
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
@@ -180,4 +184,3 @@ C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\refint\API.d
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\API.pdb
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\API.genruntimeconfig.cache
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\ref\API.dll
-C:\Users\Malu Abrami\RiderProjects\AgendifyApp\API\obj\Debug\net9.0\API.sourcelink.json

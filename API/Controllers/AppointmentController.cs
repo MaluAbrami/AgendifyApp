@@ -14,7 +14,7 @@ public static class AppointmentController
 
         group.MapPost("register-appointment", RegisterAppointment)
             .RequireAuthorization();
-        group.MapPost("cancel-appointment", CancelAppointment)
+        group.MapPatch("cancel-appointment", CancelAppointment)
             .RequireAuthorization();
         group.MapGet("get-appointment", GetAppointment);
         group.MapGet("get-all-appointments-by-schedule", GetAllAppointmentsBySchedule);

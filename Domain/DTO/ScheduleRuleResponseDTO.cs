@@ -1,9 +1,8 @@
-namespace Application.ScheduleCQ.ViewModels;
+namespace Domain.DTO;
 
-public class ScheduleRuleViewModel
+public class ScheduleRuleResponseDTO
 {
     public Guid Id { get; set; }
-    public Guid ScheduleId { get; set; }
     public DayOfWeek Day { get; set; }
     public TimeOnly StartTime { get; set; }
     public TimeOnly EndTime { get; set; }

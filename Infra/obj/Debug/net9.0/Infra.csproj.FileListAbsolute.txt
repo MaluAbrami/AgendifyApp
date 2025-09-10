@@ -9,10 +9,10 @@ C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.Gene
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.AssemblyInfoInputs.cache
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.AssemblyInfo.cs
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.csproj.CoreCompileInputs.cache
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.sourcelink.json
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.csproj.Up2Date
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\refint\Infra.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.pdb
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.genruntimeconfig.cache
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\ref\Infra.dll
-C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Infra\obj\Debug\net9.0\Infra.sourcelink.json

@@ -42,11 +42,17 @@ public class AppDbContext : IdentityDbContext<User>
             .OnDelete(DeleteBehavior.Cascade);
         
         // Agenda -> Regras (1:N) com DeleteBehavior.Cascade
-        builder.Entity<ScheduleRule>()
-            .HasOne(r => r.Schedule)
-            .WithMany(s => s.Rules)
-            .HasForeignKey(r => r.ScheduleId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Entity<ScheduleRule>(entity =>
+        {
+            entity.HasOne(r => r.Schedule)
+                .WithMany(s => s.Rules)
+                .HasForeignKey(r => r.ScheduleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configuração do enum como string
+            entity.Property(r => r.Day)
+                .HasConversion<string>();
+        });
 
         // Usuário -> Agendamentos (1:N) com DeleteBehavior.SetNull
         builder.Entity<Appointment>()
@@ -54,6 +60,10 @@ public class AppDbContext : IdentityDbContext<User>
             .WithMany(u => u.Appointments)
             .HasForeignKey(a => a.UserId)
             .OnDelete(DeleteBehavior.SetNull);
+        
+        builder.Entity<Appointment>()
+            .Property(a => a.Status)
+            .HasConversion<string>();
 
         // Service -> Agendamentos (1:N) com DeleteBehavior.SetNull
         builder.Entity<Appointment>()

@@ -12,7 +12,8 @@ public record RegisterScheduleRuleCommand : IRequest<BaseResponse<ScheduleRuleVi
     public Guid ScheduleId { get; set; }
     
     [Required]
-    public DayOfWeek DayOfWeek { get; set; }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public DayOfWeek Day { get; set; }
     
     [Required]
     public TimeOnly StartTime { get; set; }

@@ -1,6 +1,7 @@
 using Application.ScheduleCQ.Commands;
 using Application.ScheduleCQ.ViewModels;
 using AutoMapper;
+using Domain.DTO;
 using Domain.Entities;
 
 namespace Application.Mappings;
@@ -18,6 +19,8 @@ public class ScheduleMapping : Profile
             .ForMember(x => x.Schedule, x => x.AllowNull());
 
         CreateMap<ScheduleRule, ScheduleRuleViewModel>();
+        
+        CreateMap<ScheduleRule, ScheduleRuleResponseDTO>().ReverseMap();
         
         CreateMap<UpdateScheduleRuleCommand, ScheduleRule>()
             .ForAllMembers(opt => 

@@ -10,9 +10,9 @@ C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\Service
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\Services.AssemblyInfoInputs.cache
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\Services.AssemblyInfo.cs
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\Services.csproj.CoreCompileInputs.cache
+C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\Services.sourcelink.json
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\Services.csproj.Up2Date
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\Services.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\refint\Services.dll
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\Services.pdb
 C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\ref\Services.dll
-C:\Users\Malu Abrami\RiderProjects\AgendifyApp\Services\obj\Debug\net9.0\Services.sourcelink.json

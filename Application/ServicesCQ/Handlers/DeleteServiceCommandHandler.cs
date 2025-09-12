@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Response;
 using Application.ServicesCQ.Commands;
 using AutoMapper;
@@ -8,16 +9,16 @@ namespace Application.ServicesCQ.Handlers;
 
 public class DeleteServiceCommandHandler : IRequestHandler<DeleteServiceCommand, BaseResponse<DeleteServiceCommand>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IServicesService _service;
 
-    public DeleteServiceCommandHandler(IUnitOfWork unitOfWork)
+    public DeleteServiceCommandHandler(IServicesService service)
     {
-        _unitOfWork = unitOfWork;
+        _service = service;
     }
     
     public async Task<BaseResponse<DeleteServiceCommand>> Handle(DeleteServiceCommand request, CancellationToken cancellationToken)
     {
-        var serviceExist = await _unitOfWork.ServiceRepository.GetServiceAndCompany(request.ServiceId);
+        var serviceExist = await _service.GetServiceById(request.ServiceId);
         if (serviceExist == null)
             return BaseResponseExtensions.Fail<DeleteServiceCommand>("Serviço não encontrado",
                 "Nenhum serviço foi encontrado com o id informado", 404);
@@ -26,8 +27,7 @@ public class DeleteServiceCommandHandler : IRequestHandler<DeleteServiceCommand,
             "Esta pessoa não é a mesma cadastrada como dono dessa empresa, por isso não está autorizado a executar essa ação",
             401);
 
-        await _unitOfWork.ServiceRepository.DeleteAsync(serviceExist);
-        _unitOfWork.Commit();
+        await _service.DeleteService(serviceExist);
 
         return BaseResponseExtensions.Sucess(request);
     }

@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Response;
 using Application.ServicesCQ.Commands;
 using Application.ServicesCQ.ViewModels;
@@ -9,18 +10,18 @@ namespace Application.ServicesCQ.Handlers;
 
 public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand, BaseResponse<ServiceViewModel>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IServicesService _service;
     private readonly IMapper _mapper;
 
-    public UpdateServiceCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateServiceCommandHandler(IServicesService service, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _service = service;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<ServiceViewModel>> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
     {
-        var serviceExist = await _unitOfWork.ServiceRepository.GetServiceAndCompany(request.ServiceId);
+        var serviceExist = await _service.GetServiceById(request.ServiceId);
         if (serviceExist == null)
             return BaseResponseExtensions.Fail<ServiceViewModel>("Serviço não encontrado",
                 "Nenhum serviço foi encontrado com o id informado", 404);
@@ -30,8 +31,7 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand,
             401);
         
         var serviceUpdated = _mapper.Map(request, serviceExist);
-        await _unitOfWork.ServiceRepository.UpdateAsync(serviceUpdated);
-        _unitOfWork.Commit();
+        await _service.UpdateService(serviceUpdated);
         
         var serviceVM = _mapper.Map<ServiceViewModel>(serviceUpdated);
         return BaseResponseExtensions.Sucess(serviceVM);

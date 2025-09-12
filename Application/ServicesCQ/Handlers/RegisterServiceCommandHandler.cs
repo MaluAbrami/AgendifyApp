@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Response;
 using Application.ServicesCQ.Commands;
 using Application.ServicesCQ.ViewModels;
@@ -10,18 +11,20 @@ namespace Application.ServicesCQ.Handlers;
 
 public class RegisterServiceCommandHandler : IRequestHandler<RegisterServiceCommand, BaseResponse<ServiceViewModel>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IServicesService _service;
+    private readonly ICompanyService _companyService;
     private readonly IMapper _mapper;
 
-    public RegisterServiceCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public RegisterServiceCommandHandler(IServicesService service, ICompanyService companyService, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _service = service;
+        _companyService = companyService;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<ServiceViewModel>> Handle(RegisterServiceCommand request, CancellationToken cancellationToken)
     {
-        var companyExist = await _unitOfWork.CompanyRepository.GetByIdAsync(x => x.Id == request.CompanyId);
+        var companyExist = await _companyService.GetCompanyById(request.CompanyId);
 
         if (companyExist == null)
             return BaseResponseExtensions.Fail<ServiceViewModel>("Empresa não encontrada", "A empresa informado não foi encontrada", 404);
@@ -32,9 +35,8 @@ public class RegisterServiceCommandHandler : IRequestHandler<RegisterServiceComm
                 401);
         
         var service = _mapper.Map<RegisterServiceCommand, Service>(request);
-        
-        _unitOfWork.ServiceRepository.CreateAsycn(service);
-        _unitOfWork.Commit();
+
+        await _service.RegisterService(service);
 
         var serviceVM = _mapper.Map<ServiceViewModel>(service);
         return BaseResponseExtensions.Sucess<ServiceViewModel>(serviceVM);

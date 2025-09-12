@@ -1,5 +1,6 @@
 using Application.CompaniesCQ.Querys;
 using Application.CompaniesCQ.ViewModels;
+using Application.Interfaces;
 using Application.Response;
 using AutoMapper;
 using Domain.Interfaces;
@@ -9,18 +10,18 @@ namespace Application.CompaniesCQ.Handlers;
 
 public class GetCompanyQueryHandler : IRequestHandler<GetCompanyQuery, BaseResponse<CompanyViewModel>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICompanyService _companyService;
     private readonly IMapper _mapper;
 
-    public GetCompanyQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetCompanyQueryHandler(ICompanyService companyService, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _companyService = companyService;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<CompanyViewModel>> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
     {
-        var companyExist = await _unitOfWork.CompanyRepository.GetByIdAsync(x => x.Id == request.CompanyId);
+        var companyExist = await _companyService.GetCompanyById(request.CompanyId);
         if (companyExist == null)
             return BaseResponseExtensions.Fail<CompanyViewModel>("Empresa não existe",
                 "Nenhuma empresa foi encontrada com o id informado", 404);

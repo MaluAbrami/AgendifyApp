@@ -2,7 +2,7 @@ namespace Domain.Interfaces;
 
 public interface IUnitOfWork
 {
-    public void Commit();
+    public Task CommitAssync();
     public ICompanyRepository CompanyRepository { get; }
     public IServiceRepository ServiceRepository { get; }
     public IAppointmentRepository AppointmentRepository { get; }

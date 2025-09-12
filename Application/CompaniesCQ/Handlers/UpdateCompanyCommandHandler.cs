@@ -1,5 +1,6 @@
 using Application.CompaniesCQ.Commands;
 using Application.CompaniesCQ.ViewModels;
+using Application.Interfaces;
 using Application.Response;
 using AutoMapper;
 using Domain.Entities;
@@ -11,18 +12,21 @@ namespace Application.CompaniesCQ.Handlers;
 
 public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand, BaseResponse<CompanyViewModel>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICompanyService _companyService;
     private readonly IMapper _mapper;
 
-    public UpdateCompanyCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateCompanyCommandHandler(ICompanyService companyService, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _companyService = companyService;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<CompanyViewModel>> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
     {
-        var companyExist = await _unitOfWork.CompanyRepository.GetByIdAsync(x => x.Id == request.CompanyId);
+        var companyExist = await _companyService.GetCompanyById(request.CompanyId);
+        if (companyExist == null)
+            return BaseResponseExtensions.Fail<CompanyViewModel>("Empresa não existe",
+                "Nenhuma empresa foi encontrada com o id informado", 404);
         
         if(request.OwnerId != companyExist.OwnerId)
             return BaseResponseExtensions.Fail<CompanyViewModel>("Não é dono da empresa",
@@ -30,8 +34,7 @@ public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand,
                 401);
 
         var updatedCompany = _mapper.Map(request, companyExist);
-        await _unitOfWork.CompanyRepository.UpdateAsync(updatedCompany);
-        _unitOfWork.Commit();
+        await _companyService.UpdateCompany(updatedCompany);
         
         var companyVM = _mapper.Map<CompanyViewModel>(updatedCompany);
 

@@ -14,7 +14,7 @@ public class UnitOfWork(AppDbContext context, ICompanyRepository companyReposito
     public IScheduleRepository ScheduleRepository => scheduleRepository ?? new ScheduleRepository(context);
     public IScheduleRuleRepository ScheduleRuleRepository => scheduleRuleRepository ?? new ScheduleRuleRepository(context);
     
-    public void Commit()
+    public async Task CommitAssync()
     {
         _context.SaveChanges();
     }

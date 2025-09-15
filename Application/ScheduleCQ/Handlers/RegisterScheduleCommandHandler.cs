@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Response;
 using Application.ScheduleCQ.Commands;
 using Application.ScheduleCQ.ViewModels;
@@ -10,18 +11,20 @@ namespace Application.ScheduleCQ.Handlers;
 
 public class RegisterScheduleCommandHandler : IRequestHandler<RegisterScheduleCommand, BaseResponse<ScheduleViewModel>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IScheduleService _scheduleService;
+    private readonly ICompanyService _companyService;
     private readonly IMapper _mapper;
 
-    public RegisterScheduleCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public RegisterScheduleCommandHandler(IScheduleService scheduleService, ICompanyService companyService, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _scheduleService = scheduleService;
+        _companyService = companyService;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<ScheduleViewModel>> Handle(RegisterScheduleCommand request, CancellationToken cancellationToken)
     {
-        var company = await _unitOfWork.CompanyRepository.GetByIdAsync(x => x.Id == request.CompanyId);
+        var company = await _companyService.GetCompanyById(request.CompanyId);
         if (company == null)
             return BaseResponseExtensions.Fail<ScheduleViewModel>("Empresa não encontrada",
                 "A empresa informada não foi encontrada", 404);
@@ -33,8 +36,7 @@ public class RegisterScheduleCommandHandler : IRequestHandler<RegisterScheduleCo
         
         var schedule = _mapper.Map<Schedule>(request);
 
-        _unitOfWork.ScheduleRepository.CreateAsycn(schedule);
-        _unitOfWork.Commit();
+        await _scheduleService.RegisterSchedule(schedule);
         
         var scheduleVM =  _mapper.Map<ScheduleViewModel>(schedule);
         return BaseResponseExtensions.Sucess<ScheduleViewModel>(scheduleVM);

@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Response;
 using Application.ScheduleCQ.Querys;
 using Application.ScheduleCQ.ViewModels;
@@ -9,18 +10,18 @@ namespace Application.ScheduleCQ.Handlers;
 
 public class GetScheduleQueryHandler : IRequestHandler<GetScheduleQuery, BaseResponse<ScheduleViewModel>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IScheduleService _scheduleService;
     private readonly IMapper _mapper;
 
-    public GetScheduleQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetScheduleQueryHandler(IScheduleService scheduleService, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _scheduleService = scheduleService;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<ScheduleViewModel>> Handle(GetScheduleQuery request, CancellationToken cancellationToken)
     {
-        var scheduleExist = await _unitOfWork.ScheduleRepository.GetScheduleAndRulesAndAppointments(request.ScheduleId);
+        var scheduleExist = await _scheduleService.GetScheduleById(request.ScheduleId);
         if (scheduleExist == null)
             return BaseResponseExtensions.Fail<ScheduleViewModel>("Agenda não encontrada",
                 "Nenhuma agenda foi encontrada com o id informado", 404);

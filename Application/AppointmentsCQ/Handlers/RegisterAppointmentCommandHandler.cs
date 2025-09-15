@@ -1,5 +1,6 @@
 using Application.AppointmentsCQ.Commands;
 using Application.AppointmentsCQ.ViewModels;
+using Application.Interfaces;
 using Application.Response;
 using AutoMapper;
 using Domain.Entities;
@@ -10,25 +11,29 @@ namespace Application.AppointmentsCQ.Handlers;
 
 public class RegisterAppointmentCommandHandler : IRequestHandler<RegisterAppointmentCommand, BaseResponse<AppointmentViewModel>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IAppointmentService _appointmentService;
+    private readonly IScheduleService _scheduleService;
+    private readonly ICompanyService _companyService;
     private readonly IMapper _mapper;
 
-    public RegisterAppointmentCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public RegisterAppointmentCommandHandler(IAppointmentService appointmentService, IScheduleService scheduleService, ICompanyService companyService, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _appointmentService = appointmentService;
+        _scheduleService = scheduleService;
+        _companyService = companyService;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<AppointmentViewModel>> Handle(RegisterAppointmentCommand request, CancellationToken cancellationToken)
     {
-        var scheduleExist = await _unitOfWork.ScheduleRepository.GetScheduleAndRulesAndAppointments(request.ScheduleId);
+        var scheduleExist = await _scheduleService.GetScheduleById(request.ScheduleId);
 
         if (scheduleExist == null)
             return BaseResponseExtensions.Fail<AppointmentViewModel>("Empresa não encontrada",
                 "A empresa informada não foi encontrada", 404);
 
-        var company = await _unitOfWork.CompanyRepository.GetCompanyAndServices(scheduleExist.CompanyId);
-        var validService = company.Services.Any(x => x.Id == request.ServiceId);
+        var company = await _companyService.GetCompanyById(scheduleExist.CompanyId);
+        var validService = company!.Services.Any(x => x.Id == request.ServiceId);
 
         if (!validService)
             return BaseResponseExtensions.Fail<AppointmentViewModel>("Este serviço não está no catálogo dessa empresa",
@@ -45,8 +50,7 @@ public class RegisterAppointmentCommandHandler : IRequestHandler<RegisterAppoint
         var appointment = _mapper.Map<Appointment>(request);
         appointment.UserId = request.UserId;
 
-        _unitOfWork.AppointmentRepository.CreateAsycn(appointment);
-        _unitOfWork.Commit();   
+        await _appointmentService.RegisterAppointment(appointment);
         
         var appointmentVM = _mapper.Map<AppointmentViewModel>(appointment);
         return BaseResponseExtensions.Sucess<AppointmentViewModel>(appointmentVM);

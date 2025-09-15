@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Response;
 using Application.ScheduleCQ.Commands;
 using Application.ScheduleCQ.ViewModels;
@@ -10,18 +11,20 @@ namespace Application.ScheduleCQ.Handlers;
 
 public class RegisterScheduleRuleHandler : IRequestHandler<RegisterScheduleRuleCommand, BaseResponse<ScheduleRuleViewModel>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IScheduleRuleService _scheduleRuleService;
+    private readonly IScheduleService _scheduleService;
     private readonly IMapper _mapper;
 
-    public RegisterScheduleRuleHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public RegisterScheduleRuleHandler(IScheduleRuleService scheduleRuleService, IScheduleService scheduleService, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _scheduleRuleService = scheduleRuleService;
+        _scheduleService = scheduleService;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<ScheduleRuleViewModel>> Handle(RegisterScheduleRuleCommand request, CancellationToken cancellationToken)
     {
-        var scheduleExist = await _unitOfWork.ScheduleRepository.GetScheduleAndCompany(request.ScheduleId);
+        var scheduleExist = await _scheduleService.GetScheduleById(request.ScheduleId);
 
         if (scheduleExist == null)
             return BaseResponseExtensions.Fail<ScheduleRuleViewModel>("Agenda não encontrada",
@@ -37,10 +40,9 @@ public class RegisterScheduleRuleHandler : IRequestHandler<RegisterScheduleRuleC
                 "Não é possível cadastrar mais do que uma regra para um mesmo dia da semana",
                 400);
         
-        var scheduleRule =  _mapper.Map<ScheduleRule>(request);
-        
-        await _unitOfWork.ScheduleRuleRepository.CreateAsycn(scheduleRule);
-        _unitOfWork.Commit();
+        var scheduleRule = _mapper.Map<ScheduleRule>(request);
+
+        await _scheduleRuleService.RegisterScheduleRule(scheduleRule);
         
         var scheduleRuleVM = _mapper.Map<ScheduleRuleViewModel>(scheduleRule);
         return BaseResponseExtensions.Sucess<ScheduleRuleViewModel>(scheduleRuleVM);

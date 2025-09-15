@@ -1,6 +1,7 @@
 using Application.CompaniesCQ.Commands;
 using Application.CompaniesCQ.ViewModels;
 using AutoMapper;
+using Domain.DTO;
 using Domain.Entities;
 
 namespace Application.Mappings;
@@ -17,5 +18,9 @@ public class CompanyMappings : Profile
         CreateMap<UpdateCompanyCommand, Company>()
             .ForAllMembers(opt =>
                 opt.Condition((src, dest, srcMember) => srcMember != null));
+
+        CreateMap<CompanyResponseDTO, Company>().ReverseMap();
+        
+        CreateMap<CompanyResponseDTO, CompanyViewModel>();
     }
 }

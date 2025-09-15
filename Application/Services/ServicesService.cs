@@ -16,11 +16,11 @@ public class ServicesService : IServicesService
         _mapper = mapper;
     }
     
-    public async Task RegisterService(Service company)
+    public async Task RegisterService(Service service)
     {
         try
         {
-            await _unitOfWork.ServiceRepository.CreateAsycn(company);
+            await _unitOfWork.ServiceRepository.CreateAsycn(service);
             await _unitOfWork.CommitAssync();
         }
         catch (Exception e)
@@ -56,11 +56,12 @@ public class ServicesService : IServicesService
         }
     }
 */
-    public async Task DeleteService(Service company)
+    public async Task DeleteService(Service service)
     {
         try
         {
-            await _unitOfWork.ServiceRepository.DeleteAsync(company);
+            await _unitOfWork.ServiceRepository.DeleteAsync(service);
+            await _unitOfWork.CommitAssync();
         }
         catch (Exception e)
         {
@@ -69,11 +70,13 @@ public class ServicesService : IServicesService
         }
     }
 
-    public async Task<Service> UpdateService(Service company)
+    public async Task<Service> UpdateService(Service service)
     {
         try
         {
-            return await _unitOfWork.ServiceRepository.UpdateAsync(company);
+            var serviceUpdated = await _unitOfWork.ServiceRepository.UpdateAsync(service);
+            await _unitOfWork.CommitAssync();
+            return serviceUpdated;
         }
         catch (Exception e)
         {

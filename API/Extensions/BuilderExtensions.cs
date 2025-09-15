@@ -1,5 +1,7 @@
 using System.Text;
+using Application.Interfaces;
 using Application.Mappings;
+using Application.Services;
 using Application.UserCQ.Commands;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -11,7 +13,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Services.AuthService;
-using Services.CompanyService;
 
 namespace API.Extensions;
 
@@ -95,7 +96,11 @@ public static class BuilderExtensions
     public static void AddInjections(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<IScheduleService, ScheduleService>();
         builder.Services.AddScoped<ICompanyService, CompanyService>();
+        builder.Services.AddScoped<IServicesService, ServicesService>();
+        builder.Services.AddScoped<IScheduleRuleService, ScheduleRuleService>();
+        builder.Services.AddScoped<IAppointmentService, AppointmentService>();
     }
 
     public static void AddRepositories(this WebApplicationBuilder builder)

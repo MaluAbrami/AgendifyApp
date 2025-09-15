@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Response;
 using Application.ScheduleCQ.Querys;
 using Application.ScheduleCQ.ViewModels;
@@ -9,18 +10,18 @@ namespace Application.ScheduleCQ.Handlers;
 
 public class GetScheduleRuleHandler : IRequestHandler<GetScheduleRuleQuery, BaseResponse<ScheduleRuleViewModel>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IScheduleRuleService _scheduleRuleService;
     private readonly IMapper _mapper;
 
-    public GetScheduleRuleHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetScheduleRuleHandler(IScheduleRuleService scheduleRuleService, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _scheduleRuleService = scheduleRuleService;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<ScheduleRuleViewModel>> Handle(GetScheduleRuleQuery request, CancellationToken cancellationToken)
     {
-        var ruleExist = await _unitOfWork.ScheduleRuleRepository.GetByIdAsync(x => x.Id == request.RuleId);
+        var ruleExist = await _scheduleRuleService.GetScheduleRuleById(request.RuleId);
         if (ruleExist == null)
             return BaseResponseExtensions.Fail<ScheduleRuleViewModel>("Regra não encontrada",
                 "Nenhuma regra foi encontrada com o id informado", 404);

@@ -34,9 +34,9 @@ public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand,
                 401);
 
         var updatedCompany = _mapper.Map(request, companyExist);
-        await _companyService.UpdateCompany(updatedCompany);
+        var companyAfterUpdate = await _companyService.UpdateCompany(updatedCompany);
         
-        var companyVM = _mapper.Map<CompanyViewModel>(updatedCompany);
+        var companyVM = _mapper.Map<CompanyViewModel>(companyAfterUpdate);
 
         return BaseResponseExtensions.Sucess<CompanyViewModel>(companyVM);
     }

@@ -1,5 +1,6 @@
 using Application.AppointmentsCQ.Querys;
 using Application.AppointmentsCQ.ViewModels;
+using Application.Interfaces;
 using Application.Response;
 using AutoMapper;
 using Domain.Interfaces;
@@ -9,18 +10,18 @@ namespace Application.AppointmentsCQ.Handlers;
 
 public class GetAllAppointmentByScheduleQueryHandler : IRequestHandler<GetAllAppointmentByScheduleQuery, BaseResponse<List<AppointmentViewModel>>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IAppointmentService _appointmentService;
     private readonly IMapper _mapper;
 
-    public GetAllAppointmentByScheduleQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetAllAppointmentByScheduleQueryHandler(IAppointmentService appointmentService, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _appointmentService = appointmentService;
         _mapper = mapper;
     }
     
     public async Task<BaseResponse<List<AppointmentViewModel>>> Handle(GetAllAppointmentByScheduleQuery request, CancellationToken cancellationToken)
     {
-        var listAppointments = await _unitOfWork.AppointmentRepository.GetAllFullAppointments(request.ScheduleId);
+        var listAppointments = await _appointmentService.GetAllFullAppointmentsBySchedule(request.ScheduleId);
         
         if (listAppointments == null || listAppointments.Count() == 0)
             return BaseResponseExtensions.Fail<List<AppointmentViewModel>>("Não há nenhum agendamento marcado",

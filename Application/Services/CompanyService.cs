@@ -3,6 +3,7 @@ using Application.CompaniesCQ.ViewModels;
 using Application.Interfaces;
 using Application.Response;
 using AutoMapper;
+using Domain.DTO;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -65,6 +66,7 @@ public class CompanyService : ICompanyService
         try
         {
             await _unitOfWork.CompanyRepository.DeleteAsync(company);
+            await _unitOfWork.CommitAssync();
         }
         catch (Exception e)
         {
@@ -73,11 +75,14 @@ public class CompanyService : ICompanyService
         }
     }
 
-    public async Task<Company> UpdateCompany(Company company)
+    public async Task<CompanyResponseDTO> UpdateCompany(Company company)
     {
         try
         {
-            return await _unitOfWork.CompanyRepository.UpdateAsync(company);
+            var companyUpdated = await _unitOfWork.CompanyRepository.UpdateAsync(company);
+            await _unitOfWork.CommitAssync();
+            
+            return _mapper.Map<CompanyResponseDTO>(companyUpdated);
         }
         catch (Exception e)
         {

@@ -39,6 +39,19 @@ public class ScheduleRuleService : IScheduleRuleService
                 throw;
         }
     }
+    
+    public async Task<ScheduleRule?> GetScheduleRuleByDayOfWeek(DayOfWeek day, Guid scheduleId)
+    {
+        try
+        {
+            return await _unitOfWork.ScheduleRuleRepository.GetScheduleRuleByDayOfWeek(day, scheduleId);
+        }
+        catch (Exception a)
+        {
+            Console.WriteLine(a);
+            throw;
+        }
+    }
 /*
     public async Task<List<ScheduleRule>> GetAllScheduleRules()
     {

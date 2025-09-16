@@ -24,6 +24,7 @@ public class ScheduleRepository(AppDbContext context) : BaseRespository<Schedule
         return await _context.Schedules
             .Include(x => x.Rules)
             .Include(x => x.Appointments)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

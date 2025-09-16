@@ -14,7 +14,7 @@ public static class AppointmentController
 
         group.MapPost("register-appointment", RegisterAppointment)
             .RequireAuthorization();
-        group.MapPatch("cancel-appointment", CancelAppointment)
+        group.MapPatch("cancel-appointment/{appointmentId}", CancelAppointment)
             .RequireAuthorization();
         group.MapGet("get-appointment", GetAppointment);
         group.MapGet("get-all-appointments-by-schedule", GetAllAppointmentsBySchedule);
@@ -39,14 +39,15 @@ public static class AppointmentController
     }
     
     private static async Task<IResult> CancelAppointment(HttpContext context, [FromServices] IMediator mediator,
-        [FromBody] CancelAppointmentCommand command)
+        Guid appointmentId)
     {
         var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
         if(string.IsNullOrEmpty(userId))
             return Results.Unauthorized();
-        
-        command.UserId = userId;
+
+        CancelAppointmentCommand command = new CancelAppointmentCommand()
+            { UserId = userId, AppointmentId = appointmentId };
         
         var result = await mediator.Send(command);
 

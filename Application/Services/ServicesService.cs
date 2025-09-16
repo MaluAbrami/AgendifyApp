@@ -30,11 +30,24 @@ public class ServicesService : IServicesService
         }
     }
 
-    public async Task<Service?> GetServiceById(Guid id)
+    public async Task<Service?> GetServiceWithCompanyById(Guid id)
     {
         try
         {
             return await _unitOfWork.ServiceRepository.GetServiceAndCompany(id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    public async Task<Service?> GetServiceById(Guid id)
+    {
+        try
+        {
+            return await _unitOfWork.ServiceRepository.GetByIdAsync(id);
         }
         catch (Exception e)
         {

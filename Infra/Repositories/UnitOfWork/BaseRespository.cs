@@ -19,9 +19,9 @@ public class BaseRespository<T> : IBaseRepository<T> where T : class
         return command;
     }
 
-    public async Task<T?> GetByIdAsync(System.Linq.Expressions.Expression<Func<T, bool>> expression)
+    public async Task<T?> GetByIdAsync(Guid expression)
     {
-        return await _context.Set<T>().FirstOrDefaultAsync(expression);
+        return await _context.Set<T>().FindAsync(expression);
     }
 
     public IEnumerable<T> GetAllAsync()

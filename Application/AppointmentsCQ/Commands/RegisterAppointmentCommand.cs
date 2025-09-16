@@ -15,7 +15,7 @@ public record RegisterAppointmentCommand : IRequest<BaseResponse<AppointmentView
     public string UserId { get; set; }
     
     [Required]
-    public DateTime ScheduleAt { get; set; }
+    public DateTime AppointmentDate { get; set; }
     
     [Required]
     public Guid ScheduleId { get; set; }

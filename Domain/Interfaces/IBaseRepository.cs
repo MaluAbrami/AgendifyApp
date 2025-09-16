@@ -3,7 +3,7 @@ namespace Domain.Interfaces;
 public interface IBaseRepository<T> where T : class
 {
     Task<T> CreateAsycn(T command);
-    Task<T?> GetByIdAsync(System.Linq.Expressions.Expression<Func<T, bool>> expression);
+    Task<T?> GetByIdAsync(Guid expression);
     IEnumerable<T> GetAllAsync();
     Task<T> UpdateAsync(T commandUpdate);
     Task DeleteAsync(T entity);

@@ -101,6 +101,7 @@ public static class BuilderExtensions
         builder.Services.AddScoped<IServicesService, ServicesService>();
         builder.Services.AddScoped<IScheduleRuleService, ScheduleRuleService>();
         builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+        builder.Services.AddScoped<IOpeningHoursService, OpeningHoursService>();
     }
 
     public static void AddRepositories(this WebApplicationBuilder builder)

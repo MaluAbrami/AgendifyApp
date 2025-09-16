@@ -16,4 +16,10 @@ public class ScheduleRuleRepository(AppDbContext context) : BaseRespository<Sche
             .Include(x => x.Schedule)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+    
+    public async Task<ScheduleRule?> GetScheduleRuleByDayOfWeek(DayOfWeek day, Guid scheduleId)
+    {
+        return await _context.ScheduleRules
+            .FirstOrDefaultAsync(x => x.ScheduleId == scheduleId && x.Day == day);
+    }
 }

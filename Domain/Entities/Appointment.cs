@@ -22,7 +22,10 @@ public class Appointment
     public Schedule Schedule { get; set; } = null!;
     
     [Required]
-    public DateTime ScheduleAt { get; set; }
+    public DateOnly AppointmentDate { get; set; }
+    
+    public TimeOnly StartTime { get; set; }
+    public TimeOnly EndTime { get; set; } 
 
     [Required]
     public AppointmentStatus Status { get; set; } = AppointmentStatus.Pending;

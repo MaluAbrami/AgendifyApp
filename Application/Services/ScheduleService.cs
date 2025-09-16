@@ -34,7 +34,20 @@ public class ScheduleService : IScheduleService
     {
         try
         {
-            return await _unitOfWork.ScheduleRepository.GetScheduleAndCompany(id);
+            return await _unitOfWork.ScheduleRepository.GetByIdAsync(id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    public async Task<Schedule?> GetScheduleWithAppoitmentsAndRulesById(Guid id)
+    {
+        try
+        {
+            return await _unitOfWork.ScheduleRepository.GetScheduleAndRulesAndAppointments(id);
         }
         catch (Exception e)
         {

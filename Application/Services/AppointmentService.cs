@@ -1,6 +1,7 @@
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 
 namespace Application.Services;
@@ -48,6 +49,19 @@ public class AppointmentService : IAppointmentService
         try
         {
             return await _unitOfWork.AppointmentRepository.GetAllFullAppointments(scheduleId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    public async Task<List<Appointment>?> GetAllAppointmentsPendingBySchedule(Guid scheduleId, DateOnly date)
+    {
+        try
+        {
+            return await _unitOfWork.AppointmentRepository.GetAllPendingAppointmentsBySchedule(scheduleId, date);
         }
         catch (Exception e)
         {

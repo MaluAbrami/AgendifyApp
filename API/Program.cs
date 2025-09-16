@@ -114,5 +114,6 @@ app.CompanyRoutes();
 app.ServiceRoutes();
 app.ScheduleRoutes();
 app.AppointmentRoutes();
+app.OpeningHoursRoutes();
 
 app.Run();

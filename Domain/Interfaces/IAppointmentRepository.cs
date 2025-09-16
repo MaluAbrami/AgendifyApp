@@ -6,4 +6,5 @@ public interface IAppointmentRepository : IBaseRepository<Appointment>
 {
     public Task<Appointment?> GetFullAppointment(Guid id);
     public Task<List<Appointment>?> GetAllFullAppointments(Guid scheduleId);
+    public Task<List<Appointment>?> GetAllPendingAppointmentsBySchedule(Guid scheduleId, DateOnly date);
 }
